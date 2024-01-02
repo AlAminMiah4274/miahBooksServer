@@ -27,8 +27,10 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
-    const booksCollection = client.db("miahBooks").collection('books');
+    const booksCollection = client.db("miahBooks").collection("books");
+    const bookingsCollection = client.db("miahBooks").collection("bookings");
 
+    // to get all books data from database in client side 
     app.get("/books", async (req, res) => {
       const query = {};
       const result = await booksCollection.find(query).toArray();
@@ -41,6 +43,13 @@ async function run() {
       const query = { _id: new ObjectId(id) };
       const book = await booksCollection.findOne(query);
       res.send(book);
+    });
+
+    // to save all bookings in database
+    app.post("/bookings", async (req, res) => {
+      const booking = req.body;
+      const result = await bookingsCollection.insertOne(booking);
+      res.send(result);
     });
 
   } finally {
