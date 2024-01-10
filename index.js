@@ -52,6 +52,20 @@ async function run() {
       res.send(result);
     });
 
+    // to get all bookings data in the client side (MyOrder)
+    app.get("/bookings", async (req, res) => {
+      const query = {};
+      const result = await bookingsCollection.find(query).toArray();
+      res.send(result);
+    });
+
+    // to get specific bookings data in order to show in the populer component 
+    app.get("/booking", async (req, res) => {
+      const query = {};
+      const result = await bookingsCollection.find(query).limit(3).toArray();
+      res.send(result);
+    });
+
   } finally {
     // Ensures that the client will close when you finish/error
   }
