@@ -29,6 +29,9 @@ async function run() {
   try {
     const booksCollection = client.db("miahBooks").collection("books");
     const bookingsCollection = client.db("miahBooks").collection("bookings");
+    const productsCollection = client.db("miahBooks").collection("products");
+
+    // -------------- BOOKS ---------------- //
 
     // to get all books data from database in client side 
     app.get("/books", async (req, res) => {
@@ -44,6 +47,8 @@ async function run() {
       const book = await booksCollection.findOne(query);
       res.send(book);
     });
+
+    // -------------- BOOKINGS ---------------- //
 
     // to save all bookings in database
     app.post("/bookings", async (req, res) => {
@@ -63,6 +68,22 @@ async function run() {
     app.get("/booking", async (req, res) => {
       const query = {};
       const result = await bookingsCollection.find(query).limit(3).toArray();
+      res.send(result);
+    });
+
+    // -------------- PRODUCTS ---------------- //
+
+    // to save add products data in database 
+    app.post("/products", async (req, res) => {
+      const product = req.body;
+      const result = await productsCollection.insertOne(product);
+      res.send(result);
+    });
+
+    // to get all prodcuts data in client side (MyProducts)
+    app.get("/products", async (req, res) => {
+      const query = {};
+      const result = await productsCollection.find(query).toArray();
       res.send(result);
     });
 
