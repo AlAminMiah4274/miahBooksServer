@@ -4,6 +4,7 @@ const port = process.env.PORT || 5000;
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 require('dotenv').config();
 const cors = require('cors');
+const jwt = require("jsonwebtoken");
 
 // middlewares 
 app.use(cors());
@@ -30,6 +31,7 @@ async function run() {
     const booksCollection = client.db("miahBooks").collection("books");
     const bookingsCollection = client.db("miahBooks").collection("bookings");
     const productsCollection = client.db("miahBooks").collection("products");
+    const usersCollection = client.db("miahBooks").collection("users");
 
     // -------------- BOOKS ---------------- //
 
@@ -85,6 +87,19 @@ async function run() {
       const query = {};
       const result = await productsCollection.find(query).toArray();
       res.send(result);
+    });
+
+    // -------------- USERS ---------------- //
+
+    // to save all users in the database 
+    app.post("/users", async (req, res) => {
+
+    });
+
+    // -------------- JWT ---------------- //
+    app.get("/jwt", (req, res) => {
+      const userEmail = req.query.email;
+      const token = jwt.sign({userEmail}, process.env.ACCESS_TOKEN, {expiresIn: "1hr"});
     });
 
   } finally {
